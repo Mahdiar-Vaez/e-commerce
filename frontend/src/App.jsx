@@ -10,6 +10,9 @@ import Checkout from "./Components/Cart/Checkout";
 import ProductDetails from "./Components/Products/ProductDetail";
 import OrderConfirmation from "./Components/Cart/OrderConfirmation";
 import OrderDetail from "./Pages/OrderDetails/OrderDetail";
+import MyOrderPage from "./Pages/Profile/MyOrderPage";
+import AdminLayout from "./Components/layout/admin/AdminLayout";
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
 
 export default function App() {
   const x = {
@@ -31,8 +34,11 @@ export default function App() {
         <Route path="checkout" element={<Checkout />} />
         <Route path="order-confirm" element={<OrderConfirmation />} />
         <Route path="order/:id" element={<OrderDetail />} />
+        <Route path="orders" element={<MyOrderPage />} />
       </Route>
-      <Route>{/* admin Layout */}</Route>
+      <Route path="/admin" element={<AdminLayout/>}>
+      <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+      </Route>
     </Routes>
   );
 }

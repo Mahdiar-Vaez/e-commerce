@@ -87,10 +87,10 @@ export default function Checkout() {
   const total = cartProducts.reduce((sum, p) => sum + p.price * p.qty, 0)
 
   return (
-    <div className="max-w-6xl mx-auto p-4 bg-white rounded-lg shadow mt-6 flex flex-col lg:flex-row gap-4">
+    <div className="max-w-6xl mx-auto p-4  bg-white rounded-lg shadow mt-6 flex flex-col items-start justify-center lg:flex-row gap-4">
       {/* Product Summary */}
-      <div className="lg:w-2/5 w-full mb-4 lg:mb-0">
-        <div className="border rounded-lg p-4 shadow-sm">
+      <div className="lg:w-2/5 h-full w-full mb-4 lg:mb-0">
+        <div className="border h-full rounded-lg p-4 shadow-sm">
           <h3 className="text-lg font-bold mb-4 text-gray-800">خلاصه سفارش</h3>
           <div className="flex flex-col gap-3 max-h-80 overflow-y-auto">
             {cartProducts.map((p, idx) => (
@@ -115,7 +115,7 @@ export default function Checkout() {
         </div>
       </div>
       {/* Checkout Form */}
-      <div className="lg:w-3/5 w-full">
+      <div className="lg:w-3/5 w-full border rounded-lg p-4 ">
         <h2 className="text-xl font-bold mb-6 text-center">تکمیل خرید</h2>
         <form onSubmit={handleSubmit} className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
