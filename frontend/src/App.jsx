@@ -13,14 +13,12 @@ import OrderDetail from "./Pages/OrderDetails/OrderDetail";
 import MyOrderPage from "./Pages/Profile/MyOrderPage";
 import AdminLayout from "./Components/layout/admin/AdminLayout";
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import AdminUsers from "./Pages/Admin/AdminUser";
+import Products from "./Pages/Admin/Products";
+import OrderManagement from "./Pages/Admin/orderManagement.jsx";
 
 export default function App() {
-  const x = {
-    lastName: "alii",
-  };
-  const y = "name";
-  console.log((x[y] = "ali"));
-  console.log(x);
+
   return (
     <Routes>
       <Route path="/" element={<UserLayout />}>
@@ -37,7 +35,10 @@ export default function App() {
         <Route path="orders" element={<MyOrderPage />} />
       </Route>
       <Route path="/admin" element={<AdminLayout/>}>
-      <Route path="/admin/dashboard" element={<AdminDashboard/>}/>
+      <Route path="dashboard" element={<AdminDashboard/>}/>
+      <Route path="users" element={<AdminUsers/>}/>
+      <Route path="products" element={<Products/>}/>
+      <Route path="order-management" element={<OrderManagement/>}/>
       </Route>
     </Routes>
   );

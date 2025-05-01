@@ -6,7 +6,7 @@ export default function AdminSidebar() {
     const navigate=useNavigate()
   const navItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <FaTachometerAlt /> },
-    { name: 'Orders', path: '/admin/orders', icon: <FaShoppingCart /> },
+    { name: 'Orders', path: '/admin/order-management', icon: <FaShoppingCart /> },
     { name: 'Products', path: '/admin/products', icon: <FaBoxOpen /> },
     { name: 'Users', path: '/admin/users', icon: <FaUsers /> },
     { name: 'Reports', path: '/admin/reports', icon: <FaChartBar /> },
