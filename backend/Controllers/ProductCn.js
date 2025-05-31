@@ -32,7 +32,7 @@ export const getAll = asyncHandler(async (req, res, next) => {
       .sort()
       .limitFields()
       .paginate()
-      .populate(['categoryId',"brandId","defaultProductVariant"]);
+      .populate(['categoriesId', 'brandId', 'defaultVariant']);
     
     const result = await features.execute();
     
@@ -42,7 +42,7 @@ export const getAll = asyncHandler(async (req, res, next) => {
         message: "با موفقیت محصولات دریافت شدند",
       });
     } else {
-      return next(new HandleERROR("هیچ آدرسی یافت نشد", 404));
+      return next(new HandleERROR("هیچ محصولی یافت نشد", 404));
     }
   });
 export const getOne = asyncHandler(async(req,res,next)=>{
