@@ -1,6 +1,79 @@
 import asyncHandler from 'express-async-handler'
-export const create = asyncHandler((req,res,next)=>{})
-export const getAll = asyncHandler((req,res,next)=>{})
-export const getOne = asyncHandler((req,res,next)=>{})
-export const update = asyncHandler((req,res,next)=>{})
-export const remove = asyncHandler((req,res,next)=>{})
+import Product from '../Models/ProductMd.js';
+import ApiFeatures, { HandleERROR } from 'vanta-api';
+import  jwt from 'jsonwebtoken';
+export const create = asyncHandler(async(req,res,next)=>{
+    const newProduct=await Product.create(req.body)
+   return res.status(201).json({
+        success: true,
+        message:'محصول با موفقیت ساخته شد',
+        product: newProduct
+    });
+    
+
+
+})
+  
+export const getAll = asyncHandler(async (req, res, next) => { 
+  
+   
+    let queryStr = req.query;
+    if(req?.headers?.authorization.split(" ")[1]){
+        const {id,role} = jwt.verify(req?.headers?.authorization.split(" ")[1],process.env.SECRET_KEY)
+        if(role!='admin'&& role!='superAdmin'){
+            const filters={
+                isActive:true
+            }
+            queryStr.filters=JSON.stringify(filters)
+        }
+    }
+    const features = new ApiFeatures(Product, queryStr)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate()
+      .populate(['categoryId',"brandId","defaultProductVariant"]);
+    
+    const result = await features.execute();
+    
+    if (result.count > 0) {
+      return res.status(200).json({
+        ...result,
+        message: "با موفقیت محصولات دریافت شدند",
+      });
+    } else {
+      return next(new HandleERROR("هیچ آدرسی یافت نشد", 404));
+    }
+  });
+export const getOne = asyncHandler(async(req,res,next)=>{
+    const {id}=req.params
+
+    const product=await Product.findById(id)
+
+    if(!product ){
+        return new HandleERROR('محصول با شناسه ذکر شده یافت نشد',400)
+    }
+    if(req?.headers?.authorization.split(" ")[1]){
+        const {id,role} = jwt.verify(req?.headers?.authorization.split(" ")[1],process.env.SECRET_KEY)
+        if(role!='admin'&& role!='superAdmin' && !product.isActive){
+            return new HandleERROR('محصول با شناسه ذکر شده یافت نشد',400)
+        }
+    }
+    
+    
+
+    return res.status(200).json({
+        success: true,
+        message: 'محصول با موفقیت دریافت شد',
+        product
+    });
+})
+export const update = asyncHandler(async(req,res,next)=>{
+    const {id}=req.params
+    const updatedPr=await Product.findByIdAndUpdate(id,req.body,{new:true,runValidators:true})
+    return res.status(200).json({
+        success: true,
+        message: 'محصول با موفقیت بروز شد',
+        updatedPr
+    })
+})

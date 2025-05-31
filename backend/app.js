@@ -1,7 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
 import {fileURLToPath} from 'url'
-import path, { format } from 'path'
+import path from 'path'
 import {
     addressRouter,
     orderRouter,
@@ -12,7 +12,7 @@ import {
     commentRouter,
     cartRouter,
     categoryRouter,
-    brandRouter,
+    brandRouter,userRoute,
     productVariantRouter,
   } from './Routes/import.js'
 import catchError from './utils/catchError.js'
@@ -22,23 +22,11 @@ console.log("🚀 ~ __filename:", __filename)
 export  const __dirname=path.dirname(__filename)
 console.log("🚀 ~ __dirname:", __dirname)
 const app=express()
-console.log({
-    addressRouter,
-    orderRouter,
-    productRouter,
-    variantRouter,
-    discountRouter,
-    sliderRouter,
-    commentRouter,
-    cartRouter,
-    categoryRouter,
-    brandRouter,
-    productVariantRouter,
-  })
  app.use(express.json())
 app.use(morgan('dev'))
 
  app.use(express.static('/Public'))
+ app.use('/users',userRoute)
  app.use('/address', addressRouter)
  app.use('/orders', orderRouter)
  app.use('/products', productRouter)

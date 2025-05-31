@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-export const IsAdmin=(req,res,next)=>{
+ const IsAdmin=(req,res,next)=>{
         try {
             const {id,role}=jwt.verify(req?.headers?.authorization.split(' ')[1],process.env.SECRET_KEY)
             req.userId=id
@@ -20,3 +20,4 @@ export const IsAdmin=(req,res,next)=>{
             })
         }
 }
+export default IsAdmin

@@ -9,12 +9,11 @@ import cartRouter from "./Cart.js";
 import categoryRouter from "./Category.js";
 import brandRouter from "./Brand.js";
 import productVariantRouter from "./ProductVariant.js";
-import userRouter from "./User.js";
+import userRoute from "./User.js";
 export {
   addressRouter,
   orderRouter,
   productRouter,
-  userRouter,
   variantRouter,
   discountRouter,
   sliderRouter,
@@ -23,4 +22,5 @@ export {
   categoryRouter,
   brandRouter,
   productVariantRouter,
+  userRoute
 };
