@@ -46,27 +46,29 @@ export const getAll = asyncHandler(async (req, res, next) => {
       return next(new HandleERROR("هیچ محصولی یافت نشد", 404));
     }
   });
-export const getOne = asyncHandler(async(req,res,next)=>{
+  export const getOne = asyncHandler(async(req,res,next)=>{
     const {id}=req.params
-    let favoriteProduct=false
-    const product=await Product.findById(id)
+    let favoriteProduct = false;
 
-    if(!product ){
-        return new HandleERROR('محصول با شناسه ذکر شده یافت نشد',400)
-    }
-    if(req?.headers?.authorization.split(" ")[1]){
-        const {id:userId,role} = jwt.verify(req?.headers?.authorization.split(" ")[1],process.env.SECRET_KEY)
-        if(role!='admin'&& role!='superAdmin' && !product.isActive){
-            return new HandleERROR('محصول با شناسه ذکر شده یافت نشد',400)
-        }    
-        const user=await User.findById(userId)
-        const isFavorite= user.favoriteProductIds.includes(id);
-        if(isFavorite)
-            favoriteProduct=true
+    const product = await Product.findById(id);
 
+    if(!product){
+        return next(new HandleERROR('محصول با شناسه ذکر شده یافت نشد',400));
     }
-    
-    
+
+    if(req.headers?.authorization && req.headers.authorization.startsWith("Bearer ")){
+        const token = req.headers.authorization.split(" ")[1];
+        const {id: userId, role} = jwt.verify(token, process.env.SECRET_KEY);
+
+        if(role !== 'admin' && role !== 'superAdmin' && !product.isActive){
+            return next(new HandleERROR('محصول با شناسه ذکر شده یافت نشد',400));
+        }
+
+        const user = await User.findById(userId);
+        if(user?.favoriteProductIds?.includes(id)){
+            favoriteProduct = true;
+        }
+    }
 
     return res.status(200).json({
         success: true,
@@ -74,7 +76,8 @@ export const getOne = asyncHandler(async(req,res,next)=>{
         product,
         favoriteProduct
     });
-})
+});
+
 export const update = asyncHandler(async(req,res,next)=>{
     const {id}=req.params
     const updatedPr=await Product.findByIdAndUpdate(id,req.body,{new:true,runValidators:true})
