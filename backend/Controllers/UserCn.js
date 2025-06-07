@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import ApiFeatures, { HandleERROR } from "vanta-api";
 import User from "../Models/UserMd.js";
 export const getAll = asyncHandler(async (req, res, next) => {
-  const features = new ApiFeatures(User, req.query, req.user?.role || "guest")
+  const features = new ApiFeatures(User, req.query, req?.role || "guest")
     .filter()
     .sort()
     .limitFields()

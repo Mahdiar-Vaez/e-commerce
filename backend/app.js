@@ -17,6 +17,7 @@ import {
   } from './Routes/import.js'
 import catchError from './utils/catchError.js'
 import HandleERROR from './utils/handleError.js'
+import isLogin from './middleware/IsLogin.js'
 const __filename=fileURLToPath(import.meta.url)
 console.log("🚀 ~ __filename:", __filename)
 export  const __dirname=path.dirname(__filename)
@@ -27,7 +28,7 @@ app.use(morgan('dev'))
 
  app.use(express.static('/Public'))
  app.use('/users',userRoute)
- app.use('/address', addressRouter)
+ app.use('/address',isLogin, addressRouter)
  app.use('/orders', orderRouter)
  app.use('/products', productRouter)
  app.use('/variants', variantRouter)

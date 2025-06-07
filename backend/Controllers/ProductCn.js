@@ -20,20 +20,19 @@ export const getAll = asyncHandler(async (req, res, next) => {
    
     let queryStr = req.query;
     if(req?.headers?.authorization.split(" ")[1]){
-        const {id,role} = jwt.verify(req?.headers?.authorization.split(" ")[1],process.env.SECRET_KEY)
-        if(role!='admin'&& role!='superAdmin'){
-            const filters={
-                isActive:true
-            }
-            queryStr.filters=JSON.stringify(filters)
-        }
+        const {role} = jwt.verify(req?.headers?.authorization.split(" ")[1],process.env.SECRET_KEY)
     }
-    const features = new ApiFeatures(Product, queryStr)
+    const features = new ApiFeatures(Product, queryStr,role)
       .filter()
       .sort()
       .limitFields()
       .paginate()
-      .populate(['categoriesId', 'brandId', 'defaultVariant']);
+      .populate(['categoriesId', 'brandId', 'defaultVariant'])
+      .addManualFilters(
+        role!='admin' && role!='superAdmin'?
+        {isActive:true}:null
+
+      )
     
     const result = await features.execute();
     

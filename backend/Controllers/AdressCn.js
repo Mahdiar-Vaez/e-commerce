@@ -23,24 +23,18 @@ export const create = asyncHandler(async (req, res, next) => {
  export const getAll = asyncHandler(async (req, res, next) => { 
     let queryStr = { ...req.query };
   
-    if (req.role !== "admin" && req.role !== "superAdmin") {
-      let filters = {};
-      try {
-        filters = JSON.parse(queryStr.filters || '{}');
-      } catch (e) {
-        return next(new HandleERROR("فرمت فیلتر نامعتبر است", 400));
-      }
-  
-      filters.userId = req.userId;
-      queryStr.filters = JSON.stringify(filters);
-    }
-  
+
     const features = new ApiFeatures(Address, queryStr)
       .filter()
       .sort()
       .limitFields()
       .paginate()
-      .populate();
+      .populate()
+      .addManualFilters(
+        req.role!='admin' && req.role!='superAdmin' ?
+        {userId:req.userId} :
+        null
+      )
   
     const result = await features.execute();
   

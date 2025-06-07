@@ -20,7 +20,7 @@ export const create = asyncHandler(async (req, res, next) => {
 });
 
 export const getAll = asyncHandler(async (req, res, next) => {
-  const features = new ApiFeatures(Brand, req.query, req.user?.role || 'guest')
+  const features = new ApiFeatures(Brand, req.query, req.role || 'guest')
     .filter()
     .sort()
     .limitFields()
